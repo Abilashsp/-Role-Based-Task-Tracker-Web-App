@@ -1,93 +1,119 @@
-Role-Based Task Tracker web app
+The reason your README looks like that on GitHub is because:
 
-A MERN Stack application with Role-Based Access Control (RBAC), where:
-✅ Admin can manage users (view, edit, delete) and assign tasks.
-✅ Members can view and manage their own tasks.
+✔ You used **emojis without headings and code blocks** in some places.
+✔ The **project structure** is not inside a Markdown code block.
+✔ Missing proper **Markdown syntax for lists and headings**.
 
-Built using MongoDB, Express.js, React, Node.js, and Tailwind CSS for a modern and responsive UI.
+Here’s the **corrected version** that will render perfectly on GitHub:
 
-✨ Features
-✅ Authentication & Authorization
+---
 
-JWT-based authentication for secure login.
+# **Role-Based Task Tracker Web App**
 
-Role-based access control (Admin & Member).
+A **MERN Stack** application with **Role-Based Access Control (RBAC)**:
+✅ **Admin** can manage users (view, edit, delete) and assign tasks.
+✅ **Members** can view and manage their own tasks.
 
-✅ User Management (Admin)
+Built using **MongoDB, Express.js, React, Node.js**, and **Tailwind CSS** for a modern and responsive UI.
 
-View all users.
+---
 
-Edit user details.
+## **✨ Features**
 
-Delete users.
+### ✅ Authentication & Authorization
 
-✅ Task Management
+* JWT-based authentication for secure login.
+* Role-based access control (Admin & Member).
 
-Admin can assign tasks to members.
+### ✅ User Management (Admin)
 
-Members can view their own tasks.
+* View all users.
+* Edit user details.
+* Delete users.
 
-Update task status (Pending, In Progress, Completed).
+### ✅ Task Management
 
-✅ Other Features
+* Admin can assign tasks to members.
+* Members can view their own tasks.
+* Update task status (Pending, In Progress, Completed).
 
-Responsive UI with Tailwind CSS.
+### ✅ Other Features
 
-Protected Routes based on roles.
+* Responsive UI with Tailwind CSS.
+* Protected routes based on roles.
 
-📂 Project Structure
+---
+
+## **📂 Project Structure**
+
+```
 role-based-task-tracker/
 ├── backend/        # Express.js + MongoDB API
 ├── frontend/       # React + Tailwind CSS UI
 └── README.md
+```
 
-🛠 Tech Stack
+---
 
-Frontend: React, Tailwind CSS
+## **🛠 Tech Stack**
 
-Backend: Node.js, Express.js
+* **Frontend**: React, Tailwind CSS
+* **Backend**: Node.js, Express.js
+* **Database**: MongoDB
+* **Authentication**: JWT
 
-Database: MongoDB
+---
 
-Authentication: JWT
+## **🚀 Getting Started**
 
-🚀 Getting Started
-1. Clone the repository
+### 1️⃣ **Clone the repository**
+
+```bash
 git clone https://github.com/Abilashsp/-Role-Based-Task-Tracker-Web-App.git
 cd role-based-task-tracker
+```
 
-2. Setup Backend
+### 2️⃣ **Setup Backend**
+
+```bash
 cd backend
 npm install
+```
 
+Create a **.env** file inside `backend` with:
 
-Create a .env file inside backend with the following:
-
+```
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
+```
 
+Start the backend:
 
-Start the backend server:
-
+```bash
 npm start
+```
 
-3. Setup Frontend
+### 3️⃣ **Setup Frontend**
+
+```bash
 cd ../frontend
 npm install
 npm start
+```
 
-🔐 User Roles
-Admin
+---
 
-View all users.
+## **🔐 User Roles**
 
-Add / Edit / Delete users.
+### **Admin**
 
-Assign tasks to members.
+* View all users
+* Add / Edit / Delete users
+* Assign tasks to members
 
-Member
+### **Member**
 
-View own tasks.
+* View own tasks
+* Update task status
 
-Update task status.
