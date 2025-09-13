@@ -15,9 +15,9 @@ export default function App() {
   if (loading) return <div className="center">Loading...</div>;
 
   return (
-    <>
+    <div className='bg-red-200'>
       <Navbar />
-      <div className="container">
+      <div className=" w-screen h-screen ">
         <Routes>
           <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
@@ -40,6 +40,6 @@ export default function App() {
           <Route path="*" element={<div>Not found</div>} />
         </Routes>
       </div>
-    </>
+    </div>
   );
 }

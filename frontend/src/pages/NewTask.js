@@ -6,7 +6,7 @@ export default function NewTask() {
   const nav = useNavigate();
 
   return (
-    <div>
+    <div className='w-full h-full py-6'>
       <TaskForm onSaved={() => nav('/dashboard')} />
     </div>
   );

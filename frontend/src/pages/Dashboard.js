@@ -1,49 +1,33 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import axios from "../api/axios"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchTasks } from "../redux/taskSlice"
 import { useAuth } from "../context/AuthContext"
 import TaskCard from "../components/TaskCard"
 import { ClipboardListIcon, ClipboardCheckIcon } from "@heroicons/react/outline"
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const [view, setView] = useState("assignedToMe")
-  const [assignedToMe, setAssignedToMe] = useState([])
-  const [assignedByMe, setAssignedByMe] = useState([])
-  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
-  async function load() {
-    setLoading(true)
-    try {
-      const res = await axios.get("/tasks")
-      const data = res.data
-      if (data.assignedToMe && data.assignedByMe) {
-        setAssignedToMe(data.assignedToMe)
-        setAssignedByMe(data.assignedByMe)
-      } else if (Array.isArray(data)) {
-        const toMe = data.filter((t) => (t.assignee?._id || t.assigneeId) === user.id)
-        const byMe = data.filter((t) => (t.creator?._id || t.creatorId) === user.id)
-        setAssignedToMe(toMe)
-        setAssignedByMe(byMe)
-      } else {
-        const arr = data.tasks || []
-        const toMe = arr.filter((t) => (t.assignee?._id || t.assigneeId) === user.id)
-        const byMe = arr.filter((t) => (t.creator?._id || t.creatorId) === user.id)
-        setAssignedToMe(toMe)
-        setAssignedByMe(byMe)
-      }
-    } catch (err) {
-      console.error(err)
-      alert("Failed to load tasks")
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Redux state
+  const {
+    assignedToMe,
+    assignedByMe,
+    assignedToMeCount,
+    assignedByMeCount,
+    loading,
+  } = useSelector((state) => state.tasks)
+
+  // Local state (unchanged)
+  const [view, setView] = useState("assignedToMe")
 
   useEffect(() => {
-    if (user) load()
-  }, [user])
+    if (user) {
+      dispatch(fetchTasks(user.id))
+    }
+  }, [user, dispatch])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-100/50">
@@ -59,11 +43,10 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Modern Tab Navigation */}
+        {/* Tabs */}
         <div className="flex justify-center mb-12">
           <div className="relative p-2 bg-white/60 backdrop-blur-lg rounded-3xl border border-white/40 shadow-2xl">
             <div className="flex relative">
-              {/* Background slider */}
               <div 
                 className={`absolute top-2 bottom-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl transition-all duration-500 ease-out ${
                   view === "assignedToMe" 
@@ -72,38 +55,50 @@ export default function Dashboard() {
                 }`}
               />
               
+              {/* Assigned To Me Tab */}
               <button
-                className={`relative z-10 px-8 py-4 text-base font-bold transition-all duration-500 rounded-2xl ${
+                className={`relative z-10 px-8 py-4 text-base font-bold transition-all duration-500 rounded-2xl flex items-center gap-3 ${
                   view === "assignedToMe" 
                     ? "text-white" 
                     : "text-gray-700 hover:text-indigo-600"
                 }`}
                 onClick={() => setView("assignedToMe")}
               >
-                <span className="flex items-center gap-3">
-                  <ClipboardCheckIcon className="w-5 h-5" />
-                  Assigned to Me
+                <ClipboardCheckIcon className="w-5 h-5" />
+                Assigned to Me
+                <span className={`ml-2 px-3 py-1 text-sm font-semibold rounded-full ${
+                  view === "assignedToMe" 
+                    ? "bg-white/30 text-white" 
+                    : "bg-indigo-100 text-indigo-700"
+                }`}>
+                  {assignedToMeCount}
                 </span>
               </button>
               
+              {/* Assigned By Me Tab */}
               <button
-                className={`relative z-10 px-8 py-4 text-base font-bold transition-all duration-500 rounded-2xl ${
+                className={`relative z-10 px-8 py-4 text-base font-bold transition-all duration-500 rounded-2xl flex items-center gap-3 ${
                   view === "assignedByMe" 
                     ? "text-white" 
                     : "text-gray-700 hover:text-indigo-600"
                 }`}
                 onClick={() => setView("assignedByMe")}
               >
-                <span className="flex items-center gap-3">
-                  <ClipboardListIcon className="w-5 h-5" />
-                  Assigned by Me
+                <ClipboardListIcon className="w-5 h-5" />
+                Assigned by Me
+                <span className={`ml-2 px-3 py-1 text-sm font-semibold rounded-full ${
+                  view === "assignedByMe" 
+                    ? "bg-white/30 text-white" 
+                    : "bg-purple-100 text-purple-700"
+                }`}>
+                  {assignedByMeCount}
                 </span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Content Area */}
+        {/* Content */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32">
             <div className="relative">
@@ -125,7 +120,7 @@ export default function Dashboard() {
                   subtitle="When someone assigns you a task, it will appear here."
                 />
               ) : (
-                <TaskList tasks={assignedToMe} onUpdated={load} />
+                <TaskList tasks={assignedToMe} onUpdated={() => dispatch(fetchTasks(user.id))} />
               )
             ) : assignedByMe.length === 0 ? (
               <EmptyState
@@ -134,7 +129,7 @@ export default function Dashboard() {
                 subtitle="Tasks you create will show up here."
               />
             ) : (
-              <TaskList tasks={assignedByMe} onUpdated={load} />
+              <TaskList tasks={assignedByMe} onUpdated={() => dispatch(fetchTasks(user.id))} />
             )}
           </div>
         )}
@@ -143,7 +138,7 @@ export default function Dashboard() {
   )
 }
 
-// Modern Empty State Component
+// EmptyState component unchanged
 function EmptyState({ icon, title, subtitle }) {
   return (
     <div className="text-center py-24">
@@ -159,7 +154,7 @@ function EmptyState({ icon, title, subtitle }) {
   )
 }
 
-// Modern Task List (Vertical Layout)
+// TaskList unchanged
 function TaskList({ tasks, onUpdated }) {
   return (
     <div className="space-y-8">
@@ -176,7 +171,6 @@ function TaskList({ tasks, onUpdated }) {
         </div>
       ))}
       
-      {/* Add custom CSS for animations */}
       <style jsx>{`
         @keyframes fadeInUp {
           from {

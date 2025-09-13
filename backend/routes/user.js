@@ -1,5 +1,5 @@
 import express from 'express';
-import { listUsers,adminUpdateUser,listUsersWithCounts,adminDeleteUser } from '../controller/usercontroller.js';
+import { listUsers,adminUpdateUser,adminDeleteUser } from '../controller/usercontroller.js';
 import { protect ,authorize} from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ router.get('/users', protect, listUsers);
 
 // ✅ /me route for current user
 router.get('/me', protect, (req, res) => res.json({ user: req.user }));
-router.get('/', protect, authorize('ADMIN'), listUsersWithCounts);
+// router.get('/', protect, authorize('ADMIN'), listUsersWithCounts);
 router.patch('/users/:id', protect, authorize('ADMIN'), adminUpdateUser);
 router.delete('/users/:id', protect, authorize('ADMIN'), adminDeleteUser);
 

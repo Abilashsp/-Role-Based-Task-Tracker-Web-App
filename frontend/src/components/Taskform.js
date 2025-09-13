@@ -39,7 +39,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6 border border-orange-100">
+    <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-6 border border-orange-100">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
           {defaultValues._id || defaultValues.id ? "Edit Task" : "Create New Task"}
