@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Activity } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import Login from './pages/Login';
@@ -9,10 +9,11 @@ import EditTask from './pages/EditTask';
 import UserList from './pages/userList'; // ✅ Import UserList page
 import { useAuth } from './context/AuthContext';
 
+
 export default function App() {
   const { user, loading } = useAuth();
 
-  if (loading) return <div className="center">Loading......</div>;
+  if (loading) return <div className="center"><Activity/></div>;
 
   return (
     <div className='bg-red-200'>
