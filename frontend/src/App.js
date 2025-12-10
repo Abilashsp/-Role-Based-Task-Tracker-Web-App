@@ -12,7 +12,7 @@ import { useAuth } from './context/AuthContext';
 export default function App() {
   const { user, loading } = useAuth();
 
-  if (loading) return <div className="center">Loading...</div>;
+  if (loading) return <div className="center">Loading......</div>;
 
   return (
     <div className='bg-red-200'>
